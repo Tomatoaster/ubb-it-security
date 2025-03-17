@@ -189,16 +189,14 @@ class CIFF:
                 # read the magic bytes
                 magic = ciff_file.read(4)
                 # read may not return the requested number of bytes
-                # TODO: magic must contain 4 bytes. If not, raise Exception
-                #if len(magic) != ____:
-                #    raise Exception(____)
+                if len(magic) != 4:
+                    raise Exception("Couldn't read 4 magic bytes")
                 bytes_read += 4
                 # decode the bytes as 4 characters
                 new_ciff.magic = magic.decode('ascii')
-                # TODO: the magic must be "CIFF". If not, raise Exception
-                #if new_ciff.magic != ____:
-                #    new_ciff.is_valid = ____
-                #    raise ____
+                if new_ciff.magic != "CIFF":
+                    new_ciff.is_valid = False
+                    raise Exception("Error parsing magic bytes")
 
                 # read the header size
                 h_size = ciff_file.read(8)
