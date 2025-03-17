@@ -230,39 +230,34 @@ class CIFF:
 
                 # read the width
                 width = ciff_file.read(8)
-                # TODO: check if width contains 8 bytes
-                #if ____ != ____:
-                #    ____
+                if len(width) != 8:
+                    raise Exception("Invalid image format: width")
                 bytes_read += 8
                 # interpret the bytes as an 8-byte-long integer
                 # HINT: check out the "q" format specifier!
                 # HINT: Does it fit our purposes?
                 new_ciff.width = struct.unpack("q", width)[0]
                 # the width must be in [0, 2^64 - 1]
-                # TODO: check the value range. If not in range, raise Exception
                 # Question: is this check necessary?
-                #if ____:
-                #    ____
+                if new_ciff.width < 0 or new_ciff.width > 2**64 - 1:
+                    raise Exception("Invalid image format: width")
 
                 # read the height
                 height = ciff_file.read(8)
-                # TODO: check if height contains 8 bytes
-                #if ____:
-                #    ____
+                if len(height) != 8:
+                    raise Exception("Invalid image format: height")
                 bytes_read += 8
                 # interpret the bytes as an 8-byte-long integer
                 # HINT: check out the "q" format specifier!
                 # HINT: Does it fit our purposes?
                 new_ciff.height = struct.unpack("q", height)[0]
                 # the height must be in [0, 2^64 - 1]
-                # TODO: check the value range
                 # Question: is this check necessary?
-                #____
-                #    ____
+                if new_ciff.height < 0 or new_ciff.height > 2**64 - 1:
+                    raise Exception("Invalid image format: height")
 
-                # TODO: content size must equal width*height*3
-                #if ____:
-                #    ____
+                if new_ciff.content_size != new_ciff.width * new_ciff.height * 3:
+                    raise Exception("Invalid image format: content size not equal to width*height*3")
 
                 # read the name of the image character by character
                 caption = ""
