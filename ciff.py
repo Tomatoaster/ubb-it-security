@@ -221,9 +221,9 @@ class CIFF:
                 # unpack returns a list
                 # HINT: check the "q" format specifier!
                 # HINT: Does it fit our purposes?
-                new_ciff.header_size = struct.unpack("q", h_size)[0]
+                new_ciff.header_size = struct.unpack("Q", h_size)[0]
                 # the header size must be in [38, 2^64 - 1]
-                if new_ciff.header_size < 38 or new_ciff.header_size > 2**64 - 1:
+                if new_ciff.header_size < 38:
                     raise Exception("Invalid image format: header size")
                 
 
@@ -235,12 +235,7 @@ class CIFF:
                 # interpret the bytes as an 8-byte-long integer
                 # HINT: check out the "q" format specifier!
                 # HINT: Does it fit our purposes?
-                new_ciff.content_size = struct.unpack("q", c_size)[0]
-                # the content size must be in [0, 2^64 - 1]
-                # Question: is this check necessary?
-                if new_ciff.content_size < 0 or \
-                        new_ciff.content_size > 2**64 - 1:
-                    raise Exception("Invalid image format: content size")
+                new_ciff.content_size = struct.unpack("Q", c_size)[0]
 
                 # read the width
                 width = ciff_file.read(8)
@@ -250,11 +245,8 @@ class CIFF:
                 # interpret the bytes as an 8-byte-long integer
                 # HINT: check out the "q" format specifier!
                 # HINT: Does it fit our purposes?
-                new_ciff.width = struct.unpack("q", width)[0]
+                new_ciff.width = struct.unpack("Q", width)[0]
                 # the width must be in [0, 2^64 - 1]
-                # Question: is this check necessary?
-                if new_ciff.width < 0 or new_ciff.width > 2**64 - 1:
-                    raise Exception("Invalid image format: width")
 
                 # read the height
                 height = ciff_file.read(8)
@@ -264,12 +256,8 @@ class CIFF:
                 # interpret the bytes as an 8-byte-long integer
                 # HINT: check out the "q" format specifier!
                 # HINT: Does it fit our purposes?
-                new_ciff.height = struct.unpack("q", height)[0]
+                new_ciff.height = struct.unpack("Q", height)[0]
                 # the height must be in [0, 2^64 - 1]
-                # Question: is this check necessary?
-                if new_ciff.height < 0 or new_ciff.height > 2**64 - 1:
-                    raise Exception("Invalid image format: height")
-
                 if new_ciff.content_size != new_ciff.width * new_ciff.height * 3:
                     raise Exception("Invalid image format: content size not equal to width*height*3")
 
