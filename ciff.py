@@ -284,31 +284,26 @@ class CIFF:
                 tag = ""
                 while bytes_read != new_ciff.header_size:
                     c = ciff_file.read(1)
-                    # TODO: check if c contains 1 byte
                     if len(c) != 1:
-                        raise Exception("Invalid image")
+                        raise Exception("Invalid image: tags")
                     bytes_read += 1
                     char = c.decode('ascii')
-                    # tags should not contain '\n'
-                    # TODO: char must not be a '\n'
-                    #if ____ == ____:
-                    #    ____
+                    if char == '\n':
+                        raise Exception("Invalid image: tags")
                     # tags are separated by terminating nulls
                     tag += char
                     if char == '\0':
                         tags.append(tag)
                         tag = ""
                     # the very last character in the header must be a '\0'
-                    # TODO: check the last character of the header
-                    #if (bytes_read == ____) and ____:
-                    #    ____
+                    if bytes_read == new_ciff.header_size and char != '\0':
+                        raise Exception("Invalid image: tags")
+
                 
                 # all tags must end with '\0'
-                # TODO: check the end of each tag for the '\0'
-                #for tag in tags:
-                #    if tag[____] != ____:
-                #        ____
-
+                for tag in tags:
+                    if tag[-1] != '\0':
+                        raise Exception("Invalid image: tags")
                 new_ciff.tags = tags
                 
                 # read the pixels
