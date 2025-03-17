@@ -62,7 +62,8 @@ class Window(Frame):
         try:
             ciff_image = CIFF.parse_ciff_file(file_path)
             if not ciff_image.is_valid:
-                raise ValueError("Invalid CIFF image!")
+                raise ValueError(ciff_image.error_message)
+                # raise ValueError("Invalid CIFF image!")
 
             self.display_image(ciff_image)
             self.display_info(ciff_image)

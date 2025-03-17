@@ -44,6 +44,7 @@ class CIFF:
         else:
             self._pixels = pixels_list
         self._is_valid = True
+        self._error_message = ""
 
     #
     # Properties
@@ -62,6 +63,19 @@ class CIFF:
     @is_valid.setter
     def is_valid(self, value):
         self._is_valid = value
+
+    @property
+    def error_message(self):
+        """
+        An error message in case the image is not valid
+
+        :return: str
+        """
+        return self._error_message
+    
+    @error_message.setter
+    def error_message(self, value):
+        self._error_message = value
 
     @property
     def magic(self):
@@ -322,5 +336,6 @@ class CIFF:
 
         except Exception as e:
             new_ciff.is_valid = False
+            new_ciff.error_message = str(e)
 
         return new_ciff
