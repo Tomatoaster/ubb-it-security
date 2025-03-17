@@ -262,9 +262,8 @@ class CIFF:
                 # read the name of the image character by character
                 caption = ""
                 c = ciff_file.read(1)
-                # TODO: check if c contains 1 byte
-                #___
-                #    ____
+                if len(c) != 1:
+                    raise Exception("Invalid image format: caption format")
                 bytes_read += 1
                 char = c.decode('ascii')
                 # read until the first '\n' (caption cannot contain '\n')
@@ -273,9 +272,8 @@ class CIFF:
                     caption += char
                     # read next character
                     c = ciff_file.read(1)
-                    # TODO: check if c contains 1 byte
-                    #___
-                    #    ____
+                    if len(c) != 1:
+                        raise Exception("Invalid image: caption")
                     bytes_read += 1
                     char = c.decode('ascii')
                 new_ciff.caption = caption
