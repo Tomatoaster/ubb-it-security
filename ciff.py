@@ -200,7 +200,6 @@ class CIFF:
 
                 # read the header size
                 h_size = ciff_file.read(8)
-                # TODO: h_size must contain 8 bytes. If not, raise Exception
                 if len(h_size) != 8:
                     raise Exception("Invalid image format: header size")
                 bytes_read += 8
@@ -216,20 +215,18 @@ class CIFF:
 
                 # read the content size
                 c_size = ciff_file.read(8)
-                # TODO: c_size must contain 8 bytes. If not, raise Exception
-                #if len(____) != ____:
-                #    ____
+                if len(c_size) != 8:
+                    raise Exception("Invalid image format: content size")
                 bytes_read += 8
                 # interpret the bytes as an 8-byte-long integer
                 # HINT: check out the "q" format specifier!
                 # HINT: Does it fit our purposes?
                 new_ciff.content_size = struct.unpack("q", c_size)[0]
                 # the content size must be in [0, 2^64 - 1]
-                # TODO: check the value range. If not in range, raise Exception
                 # Question: is this check necessary?
-                #if new_ciff.content_size < ____ or \
-                #        new_ciff.content_size > ____:
-                #    ____
+                if new_ciff.content_size < 0 or \
+                        new_ciff.content_size > 2**64 - 1:
+                    raise Exception("Invalid image format: content size")
 
                 # read the width
                 width = ciff_file.read(8)
