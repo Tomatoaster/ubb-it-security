@@ -237,7 +237,7 @@ class CIFF:
                 # interpret the bytes as an 8-byte-long integer
                 new_ciff.width = struct.unpack("Q", width)[0]
                 # the width must be in [0, 2^64 - 1]
-                if new_ciff.width < 0 or new_ciff.width > (2**64)-1:
+                if new_ciff.width < 0 or new_ciff.width > ((2**64)-1) / 3:
                     raise Exception("Invalid width value")
 
                 # read the height
@@ -249,8 +249,9 @@ class CIFF:
                 # HINT: check out the "q" format specifier!
                 # HINT: Does it fit our purposes?
                 new_ciff.height = struct.unpack("Q", height)[0]
-                # the header size must be in [0, 2^64 - 1]
-                if new_ciff.height < 0 or new_ciff.height > (2**64)-1:
+                # the height must be in [0, (2^64 - 1) / 3 / width]
+                # for content_size to fit in range
+                if new_ciff.height < 0 or new_ciff.height > ((2**64)-1) / 3 / new_ciff.width:
                     raise Exception("Invalid hight value")
 
                 if new_ciff.content_size != new_ciff.width * new_ciff.height * 3:
