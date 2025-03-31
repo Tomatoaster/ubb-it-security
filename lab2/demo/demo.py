@@ -1,10 +1,10 @@
-
+from typing import Tuple
 
 class BankAccount:
     
     def __init__(self,
                  owner: str,
-                 account_number: tuple[int, int, int],
+                 account_number: Tuple[int, int, int],
                  initial_balance: int = 0) -> None:
         self.owner = owner
         self.account_number = account_number
