@@ -215,7 +215,8 @@ class CIFF:
                 # unpack returns a list
                 new_ciff.header_size = struct.unpack("Q", h_size)[0]
                 
-                #TODO: maybe something is missing here
+                if new_ciff.header_size < 38:
+                    raise Exception("Invalid image format: header size")
 
                 # read the content size
                 c_size = ciff_file.read(8)
@@ -252,7 +253,8 @@ class CIFF:
                 if new_ciff.height < 0 or new_ciff.height > (2**64)-1:
                     raise Exception("Invalid hight value")
 
-                #TODO: maybe something is missing here
+                if new_ciff.content_size != new_ciff.width * new_ciff.height * 3:
+                    raise Exception("Invalid image format: content size not equal to width*height*3")
 
                 # read the name of the image character by character
                 caption = ""
